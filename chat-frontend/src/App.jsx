@@ -85,7 +85,7 @@ function App() {
     socket.on('profileChanges',(data)=>{
       if(user.current !== null){
         let newArr = user.current.map((elem)=>{
-          if(elem.email == data.email){
+          if(elem.email === data.email){
             return {'email':elem.email,'name':elem.name,'isActive':data.isActive};
           }
           else{

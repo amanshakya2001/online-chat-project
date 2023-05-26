@@ -7,7 +7,7 @@ const server = http.createServer(app);
 
 const io = socketIO(server, {
   cors: {
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000','https://online-chat-frontend.onrender.com','https://chat.amanshakya.tech'],
     methods: ['GET', 'POST']
   }
 });
