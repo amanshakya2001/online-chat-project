@@ -48,14 +48,28 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        padding: 0px !important;
+        padding:0px 15px !important;
+
+        li{
+            background-color: skyblue;
+            margin: 10px 0px;
+            padding: 10px 15px;
+            width: fit-content;
+            border-radius: 10px;
+        }
         .Yours{
-            text-align: left;
+            align-items: flex-start;
             padding-left: 20px;
         }
         .incoming{
-            text-align: right;
+            margin-left: auto;
             padding-right: 20px;
+        }
+        .avtar{
+            background-color: blue;
+            color: white;
+            padding:7px 10px;
+            border-radius: 10px;
         }
     }
     #messageBody{

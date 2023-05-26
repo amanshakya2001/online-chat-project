@@ -9,7 +9,7 @@ export default function ChatPage({submitMessage,message}) {
         <div id='messageBody'>
           <ul>
             {message.map(msg=>{
-              return <li className={msg.type} key={msg.message}>{msg.type==='incoming'?msg.sender:'You'} : {msg.message}</li>
+              return <li className={msg.type} key={msg.message}><span className='avtar'>{msg.type==='incoming'?msg.sender:'You'}</span> : {msg.message}</li>
             })}
           </ul>
         </div>
