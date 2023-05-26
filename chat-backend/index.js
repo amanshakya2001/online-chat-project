@@ -13,7 +13,7 @@ const io = socketIO(server, {
 });
 
 
-const user = [{'email':'amanshakya360@gmail.com','password':'12345678','name':'Aman Shakya','isActive':false},{'email':'as@gmail.com','password':'12345678','name':'Shivam Shakya','isActive':false}]
+const user = [{'email':'amanshakya360@gmail.com','password':'12345678','name':'Aman Shakya','isActive':false},{'email':'asthaverma@gmail.com','password':'12345678','name':'Astha Verma','isActive':false}]
 
 io.on('connection', (socket) => {
   console.log('A user connected with',socket.id);
