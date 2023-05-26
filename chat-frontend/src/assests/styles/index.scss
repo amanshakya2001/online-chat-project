@@ -1,0 +1,66 @@
+.user-list{
+    list-style: none;
+    padding: 0px;
+    .user{
+        background-color: greenyellow;
+        padding: 10px 5px;
+        .avtar{
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 30px;
+            position: relative;
+            .point{
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                width: 10px;
+                height: 10px;
+                border-radius: 30px;
+                &.online{
+                    background-color: green;
+                }
+                &.offline{
+                    background-color: red;
+                }
+            }
+        }
+        h4{
+            font-size: 18px;
+        }
+    }
+}
+
+#loginForm{
+    height: 100vh;
+    .spinner-border{
+        z-index: 9;
+        display: none;
+    }
+    .card{
+        max-width: 400px;
+    }
+}
+
+#chat-room{
+    height: 80vh;
+    ul{
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        padding: 0px !important;
+        .Yours{
+            text-align: left;
+            padding-left: 20px;
+        }
+        .incoming{
+            text-align: right;
+            padding-right: 20px;
+        }
+    }
+    #messageBody{
+        height: calc(100% - 100px);
+        overflow: auto;
+        padding: 20px 0px;
+    }
+}
