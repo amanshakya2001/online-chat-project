@@ -58,7 +58,7 @@ function App() {
       'sender':sender
     }
     socket.emit('message',data);
-    setMessage((prevState)=>{return [...prevState,{'email':'','sender':'You','message':data.msg,'type':'Yours'}]})
+    setMessage((prevState)=>{return [...prevState,{'email':sender,'sender':'You','message':data.msg,'type':'Yours'}]})
     $('#msg').val('');
     $('#messageBody').scrollTop();
 

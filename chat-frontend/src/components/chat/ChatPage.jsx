@@ -23,7 +23,7 @@ export default function ChatPage({submitMessage,message,user,currentuser}) {
       if(msg.type == 'incoming' && msg.email == chatId){
         setMsgArr((prevState)=>{return [...prevState,msg]})
       }
-      else if(msg.type == 'Yours'){
+      else if(msg.type == 'Yours' && msg.email == chatId){
         setMsgArr((prevState)=>{return [...prevState,msg]})
       }
     })

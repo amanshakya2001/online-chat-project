@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
 					throw new Error('No Record Find');
 				}
 				connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
-					if(error){
+					if(error || user.email == undefined){
 						throw new Error('No Record Find');
 					}
 					let user = results.rows[0];
