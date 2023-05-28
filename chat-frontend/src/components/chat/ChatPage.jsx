@@ -7,16 +7,18 @@ export default function ChatPage({submitMessage,message,user,currentuser}) {
   const chatId = params.chatId;
   const [msgArr,setMsgArr] = useState([]);
   const [temp,setTemp] = useState({});
-  useEffect(() => {
-    setMsgArr([]);
+
+  useEffect(()=>{
     user.map((obj)=>{
       console.log(obj)
       if(obj.email == chatId){
         setTemp(obj);
-        console.log(temp)
       }
     })
-    console.log(temp)
+  },[chatId]);
+
+  useEffect(() => {
+    setMsgArr([]);
     message.map((msg)=>{
       if(msg.type == 'incoming' && msg.email == chatId){
         setMsgArr((prevState)=>{return [...prevState,msg]})
