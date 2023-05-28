@@ -80,7 +80,13 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		try {
 			connection.query(`UPDATE chatusers SET isactive = false WHERE socketid = '${socket.id}';`,(error, results) => {
+				if(error){
+					throw new Error('No Record Find');
+				}
 				connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
+					if(error){
+						throw new Error('No Record Find');
+					}
 					let user = results.rows[0];
 					socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':false});
 				});
