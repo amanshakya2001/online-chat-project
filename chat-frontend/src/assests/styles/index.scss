@@ -43,7 +43,7 @@
 }
 
 #chat-room{
-    height: 80vh;
+    height: 90vh;
     ul{
         list-style: none;
         display: flex;
@@ -51,30 +51,66 @@
         padding:0px 15px !important;
 
         li{
-            background-color: skyblue;
-            margin: 10px 0px;
-            padding: 10px 15px;
             width: fit-content;
-            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
         }
         .Yours{
-            align-items: flex-start;
             padding-left: 20px;
+            margin-left: auto;
+            .avtar{
+                order: 2;
+                margin-left: 15px;
+            }
         }
         .incoming{
-            margin-left: auto;
             padding-right: 20px;
+            .msgbox{
+                margin-left: 15px;
+            }
         }
         .avtar{
-            background-color: blue;
             color: white;
-            padding:7px 10px;
-            border-radius: 10px;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 50px;
+        }
+        .msgbox{
+            background-color: skyblue;
+            padding: 5px 10px;
+            border-radius:10px ;
         }
     }
     #messageBody{
-        height: calc(100% - 100px);
+        height: calc(100% - 150px);
         overflow: auto;
         padding: 20px 0px;
+    }
+    form{
+        width: 100%;
+        display: flex;
+        padding: 0px 10px;
+        input[type=text]{
+            width: 80%;
+        }
+        input[type=submit]{
+            width: 17%;
+            margin-left: 10px;
+        }
+    }
+}
+
+.chatnav{
+    background-color: green;
+    padding: 20px 10px;
+    display: flex;
+    align-items: center;
+    
+    .avtar{
+        width: 50px;
+        overflow: hidden;
+        border-radius: 30px;
     }
 }

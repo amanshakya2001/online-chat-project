@@ -6,19 +6,51 @@ import LoginForm from './components/login';
 import Chat from './components/chat';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+import { auth } from './firebase';
+import { signInWithPopup, GoogleAuthProvider,signOut } from "firebase/auth";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
+const provider = new GoogleAuthProvider();
 
 function App() {
+  const [isLogin,setIsLogin] = useState(false);
+  const [currentuser,setCurrentUser] = useState({});
   const [message, setMessage] = useState([]);
   const [userData,setUserData] = useState([]);
   const user = useRef(null);
   const history = useNavigate();
 
+  // This script to login and store data in database.
   useEffect(() => {
     history("/");
-  }, [])
+    signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      setIsLogin(true);
+      const isFirstTimeLogin = user.metadata.creationTime === user.metadata.lastSignInTime;
+      if(isFirstTimeLogin){
+        let data = {
+          'email':user.email,
+          'name':user.displayName,
+          'image':user.photoURL
+        }
+        socket.emit('user_login_first_time',data);
+        history('/chat');
+      }
+      else{
+        let data = {
+          'email':user.email,
+        }
+        socket.emit('user_login',data);
+        history('/chat');
+      }
+      setCurrentUser({email:user.email,name:user.displayName,image:user.photoURL})
+    }).catch((error) => {
+      console.log(error)
+    });
+  }, []);
   
+  // This script is to send message to server.
   const submitMessage = (event,sender)=>{
     event.preventDefault();
     let data = {
@@ -26,51 +58,25 @@ function App() {
       'sender':sender
     }
     socket.emit('message',data);
-    setMessage((prevState)=>{return [...prevState,{'sender':'You','message':data.msg,'type':'Yours'}]})
+    setMessage((prevState)=>{return [...prevState,{'email':'','sender':'You','message':data.msg,'type':'Yours'}]})
     $('#msg').val('');
     $('#messageBody').scrollTop();
 
   }
 
-  const userLogin = (e)=>{
-    e.preventDefault();
-    const email = $('#email').val();
-    const pass = $('#password').val();
-    if(email === ''|| pass === ""){
-      alert("Value not Found");
-      return false;
-    }
-    $('#loginBtn').attr('disabled','disabled');
-    const data = {
-      'email':email,
-      'password':pass
-    }
-    socket.emit('userlogin',data);
-
-    $('.spinner-border').show();
-  }
-
-  // Script to get authenticated and get all user who are online
+  // Script to get all user who are online
   useEffect(() => {
-    socket.on('userAuth',(data)=>{
-      $('.spinner-border').hide();
-      if(data.login){
-        history("chat/");
-        setUserData(data.userData);
-        user.current = data.userData;
-      }
-      else{
-        alert('User not exist')
-        $('#loginBtn').removeAttr('disabled');
-      }
+    socket.on('user_data',(data)=>{
+      setUserData(data);
+      user.current = data;
     });
   
     return () => {
-      socket.off('userAuth');
+      socket.off('user_data');
     }
   }, [])
   
-  // Script to get message
+  // Script to get message from server.
   useEffect(() => {
     socket.on('incomingMsg',(data)=>{
       setMessage((prevState)=>{return [...prevState,data]})
@@ -81,24 +87,26 @@ function App() {
     }
   }, [])
 
+  // This script calls when user get offline or online
   useEffect(() => {
-    socket.on('profileChanges',(data)=>{
-      if(user.current !== null){
-        let newArr = user.current.map((elem)=>{
-          if(elem.email === data.email){
-            return {'email':elem.email,'name':elem.name,'isActive':data.isActive};
-          }
-          else{
-            return elem
+    socket.on('profile_change',(data)=>{
+      if(data.isActive){
+        setUserData((prevState)=>{ return [...prevState,{'email':data.email,'name':data.name,'image':data.image}]})
+      }
+      else{
+        let newArr = [];
+        user.current.map((elem)=>{
+          if(elem.email != data.email){
+            newArr.push(elem);
           }
         })
+        setUserData(newArr);
         user.current = newArr;
-        setUserData(user.current);
       }
-    });
+    })
   
     return () => {
-      socket.off('profileChanges');
+      socket.off('profile_change');
     }
   }, [])
   
@@ -106,8 +114,8 @@ function App() {
   
   return (
       <Routes>
-        <Route path="/" element={<LoginForm userLogin={userLogin} />} />
-        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} />} />
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} currentuser={currentuser} />} />
       </Routes>
   );
 }
