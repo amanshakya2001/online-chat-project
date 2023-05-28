@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
 	socket.on('user_login_first_time',(data)=>{
 		connection.query(`Insert into chatusers(email,name,image,isactive,socketid) values('${data.email}','${data.name}','${data.image}',true,'${socket.id}');`,(error, results) => {
 			console.log(data.email,"logined as",socket.id)
-			socket.broadcast.emit('profile_change',{'email':data.email,'name':data.name,'image':data.name,'isActive':true});
+			socket.broadcast.emit('profile_change',{'email':data.email,'name':data.name,'image':data.image,'isActive':true});
 			connection.query(`select email,name,image from chatusers where  email !='${data.email}' and isactive = true;`,(error, results) => {
 				socket.emit('user_data',results.rows);
 			});
@@ -78,13 +78,18 @@ io.on('connection', (socket) => {
   });
   
 	socket.on('disconnect', () => {
-		connection.query(`UPDATE chatusers SET isactive = false WHERE socketid = '${socket.id}';`,(error, results) => {
-			connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
-				let user = results.rows[0];
-				socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':false});
+		try {
+			connection.query(`UPDATE chatusers SET isactive = false WHERE socketid = '${socket.id}';`,(error, results) => {
+				connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
+					let user = results.rows[0];
+					socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':false});
+				});
+				console.log("Diconnect",socket.id)
 			});
-			console.log("Diconnect",socket.id)
-		});
+		} 
+		catch (error) {
+			console.log('An error Occured',error);
+		}
 	});
 });
 

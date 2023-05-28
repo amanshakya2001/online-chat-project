@@ -27,7 +27,7 @@ export default function ChatPage({submitMessage,message,user,currentuser}) {
         setMsgArr((prevState)=>{return [...prevState,msg]})
       }
     })
-  }, [message])
+  }, [message,chatId])
 
   return (
     <section id='chat-room'>
