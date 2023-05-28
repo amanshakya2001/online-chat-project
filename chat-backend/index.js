@@ -80,8 +80,7 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		try {
 			connection.query(`UPDATE chatusers SET isactive = false WHERE socketid = '${socket.id}';`,(error, results) => {
-				if(error || results.affectedRows == 0){
-					throw new Error('No Record Find');
+				if(error || results.rowCount == 0){
 				}
 				else{
 					connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
