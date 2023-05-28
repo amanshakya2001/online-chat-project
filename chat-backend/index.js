@@ -84,10 +84,10 @@ io.on('connection', (socket) => {
 					throw new Error('No Record Find');
 				}
 				connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
+					let user = results.rows[0];
 					if(error || user.email == undefined){
 						throw new Error('No Record Find');
 					}
-					let user = results.rows[0];
 					socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':false});
 				});
 				console.log("Diconnect",socket.id)
