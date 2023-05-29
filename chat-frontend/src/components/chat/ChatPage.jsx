@@ -10,7 +10,6 @@ export default function ChatPage({submitMessage,message,user,currentuser}) {
 
   useEffect(()=>{
     user.map((obj)=>{
-      console.log(obj)
       if(obj.email == chatId){
         setTemp(obj);
       }

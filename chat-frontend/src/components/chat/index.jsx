@@ -3,7 +3,7 @@ import ChatPage from './ChatPage';
 import MessagePage from './MessagePage';
 import { Route, Link,Routes } from 'react-router-dom';
 
-export default function Chat({submitMessage,user,message,currentuser}) {
+export default function Chat({submitMessage,user,message,currentuser,setOnlineChatUser,notification}) {
   return (
     <section id="chatWindow" className='py-5'>
         <div className="container">
@@ -16,7 +16,7 @@ export default function Chat({submitMessage,user,message,currentuser}) {
                   {user.map((obj)=>{
                     return(
                     <li className="user border border-bottom-1 w-100" key={obj.email}>
-                      <Link to={`/chat/${obj.email}`} className='d-flex text-decoration-none text-dark'>
+                      <Link to={`/chat/${obj.email}`} className='d-flex text-decoration-none text-dark position-relative' onClick={()=>{setOnlineChatUser(obj.email)}}>
                         <div className="avtar">
                           <img className="img-fluid rounded-circle" src={obj.image} alt={obj.name} />
                         </div>
@@ -24,6 +24,7 @@ export default function Chat({submitMessage,user,message,currentuser}) {
                           <h4 className='text-uppercase'>{obj.name}</h4>
                           <p className="text-truncate">Welcome to Online Chat....</p>
                         </div>
+                        {notification &&notification.hasOwnProperty(obj.email)?<span className='notification'>{notification[obj.email]}</span>:''}
                       </Link>
                     </li>)
                   })}

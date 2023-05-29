@@ -67,19 +67,32 @@ io.on('connection', (socket) => {
 		});
 	});
 	
-  socket.on('message',(message)=>{
-	connection.query(`select socketid from chatusers where  email = '${message.sender}';`,(error, results) => {
-		let socketid = results.rows[0].socketid;
-		connection.query(`select name,email from chatusers where  socketid = '${socket.id}';`,(error, results) => {
-			let sender = results.rows[0];
-			socket.to(socketid).emit("incomingMsg",{'email':sender.email,'sender':sender.name,'message':message.msg,'type':'incoming'});
+	socket.on('message',(message)=>{
+		connection.query(`select socketid,connect_user from chatusers where  email = '${message.sender}';`,(error, results) => {
+			let socketid = results.rows[0].socketid;
+			let connect_user = results.rows[0].connect_user;
+			connection.query(`select name,email from chatusers where  socketid = '${socket.id}';`,(error, results) => {
+				let sender = results.rows[0];
+				if(connect_user !== sender.email){
+					socket.to(socketid).emit("notification",sender.email);
+				}
+				socket.to(socketid).emit("incomingMsg",{'email':sender.email,'sender':sender.name,'message':message.msg,'type':'incoming'});
+			});
 		});
 	});
-  });
+
+	socket.on('set_online_user',(email)=>{
+		connection.query(`UPDATE chatusers SET connect_user = '${email}' WHERE socketid = '${socket.id}';`,(error, results) => {
+			if(error){
+				console.log(error)
+			}
+		});
+	})
   
 	socket.on('disconnect', () => {
 		try {
-			connection.query(`UPDATE chatusers SET isactive = false WHERE socketid = '${socket.id}';`,(error, results) => {
+			connection.query(`UPDATE chatusers SET isactive = false,connect_user = NULL WHERE socketid = '${socket.id}';`,(error, results) => {
+				console.log(error)
 				if(error || results.rowCount == 0){
 				}
 				else{

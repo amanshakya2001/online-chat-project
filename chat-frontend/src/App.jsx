@@ -19,6 +19,7 @@ function App() {
   const [userData,setUserData] = useState([]);
   const user = useRef(null);
   const history = useNavigate();
+  const [notification,setNotification] = useState({});
 
   // This script to login and store data in database.
   useEffect(() => {
@@ -110,12 +111,45 @@ function App() {
     }
   }, [])
   
+  // Script to set user online with which user
+  const setOnlineChatUser = (email)=>{
+    socket.emit('set_online_user',email);
+    setNotification((prevState)=>{
+      const updatedObject = { ...prevState.myObject };
+      if(updatedObject.hasOwnProperty(email)){
+        delete updatedObject[email];
+      }
+      return {
+        myObject: updatedObject
+      };
+    })
+  }
+
+  // Script to get notifications
+  useEffect(() => {
+    socket.on('notification',(email)=>{
+      setNotification((prevState)=>{
+        const updatedObject = { ...prevState.updatedObject } ;
+
+        if (updatedObject.hasOwnProperty(email)) {
+          updatedObject[email] += 1;
+        } else {
+          updatedObject[email] = 1;
+        }
+        return {updatedObject};
+      })
+    });
+  
+    return () => {
+      socket.off('notification');
+    }
+  }, [])
   
   
   return (
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} currentuser={currentuser} />} />
+        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} currentuser={currentuser} setOnlineChatUser={setOnlineChatUser} notification={notification.updatedObject} />} />
       </Routes>
   );
 }

@@ -114,3 +114,13 @@
         border-radius: 30px;
     }
 }
+.notification{
+    background-color: red;
+    height: fit-content;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    position: absolute;
+    right: 10px;
+    top: calc( 50% - 23px );
+}
