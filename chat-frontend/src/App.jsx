@@ -115,7 +115,7 @@ function App() {
   const setOnlineChatUser = (email)=>{
     socket.emit('set_online_user',email);
     setNotification((prevState)=>{
-      const updatedObject = { ...prevState.myObject };
+      const updatedObject = { ...prevState.updatedObject };
       if(updatedObject.hasOwnProperty(email)){
         delete updatedObject[email];
       }
