@@ -119,9 +119,7 @@ function App() {
       if(updatedObject.hasOwnProperty(email)){
         delete updatedObject[email];
       }
-      return {
-        myObject: updatedObject
-      };
+      return {updatedObject};
     })
   }
 
