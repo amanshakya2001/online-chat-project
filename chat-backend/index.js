@@ -38,8 +38,6 @@ const io = socketIO(server, {
 });
 
 
-const user = [{'email':'amanshakya360@gmail.com','password':'12345678','name':'Aman Shakya','isActive':false},{'email':'asthaverma@gmail.com','password':'12345678','name':'Astha Verma','isActive':false}]
-
 io.on('connection', (socket) => {
   	console.log('A user connected with',socket.id);
 	// Get User data when first time login
@@ -59,14 +57,17 @@ io.on('connection', (socket) => {
 		connection.query(`UPDATE chatusers SET isactive = true, socketid = '${socket.id}' WHERE email = '${data.email}';`,(error, results) => {
 			connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
 				let user = results.rows[0];
+				// Broadcast that profile all user
 				socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':true});
 			});
 			connection.query(`select email,name,image from chatusers where  email !='${data.email}' and isactive = true;`,(error, results) => {
+				// send all user, who are online ,data to the socket
 				socket.emit('user_data',results.rows);
 			});
 		});
 	});
 	
+	// Getting message from a user
 	socket.on('message',(message)=>{
 		connection.query(`select socketid,connect_user from chatusers where  email = '${message.sender}';`,(error, results) => {
 			let socketid = results.rows[0].socketid;
@@ -74,13 +75,16 @@ io.on('connection', (socket) => {
 			connection.query(`select name,email from chatusers where  socketid = '${socket.id}';`,(error, results) => {
 				let sender = results.rows[0];
 				if(connect_user !== sender.email){
+					// if user is not active for that chat send notification too
 					socket.to(socketid).emit("notification",sender.email);
 				}
+				// Broadcast that to to specific user socket
 				socket.to(socketid).emit("incomingMsg",{'email':sender.email,'sender':sender.name,'message':message.msg,'type':'incoming'});
 			});
 		});
 	});
 
+	// set a user active with which user
 	socket.on('set_online_user',(email)=>{
 		connection.query(`UPDATE chatusers SET connect_user = '${email}' WHERE socketid = '${socket.id}';`,(error, results) => {
 			if(error){
@@ -88,27 +92,26 @@ io.on('connection', (socket) => {
 			}
 		});
 	})
-  
+	
+	// When user get disconnect
 	socket.on('disconnect', () => {
 		try {
 			connection.query(`UPDATE chatusers SET isactive = false,connect_user = NULL WHERE socketid = '${socket.id}';`,(error, results) => {
-				console.log(error)
-				if(error || results.rowCount == 0){
-				}
-				else{
-					connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
-						let user = results.rows[0];
-						if(error || user.email == undefined){
-							throw new Error('No Record Find');
-						}
+				connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
+					let user = results.rows[0];
+					// Broadcast to all user that socket get offline
+					try{
 						socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':false});
-					});
-				}
+					}
+					catch(error){
+						console.log('An error Occured',error.message)
+					}
+				});
 				console.log("Diconnect",socket.id)
 			});
 		} 
 		catch (error) {
-			console.log('An error Occured',error);
+			console.log('An error Occured',error.message);
 		}
 	});
 });

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { io } from 'socket.io-client';
 import { Route,Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -7,13 +8,12 @@ import Chat from './components/chat';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { auth } from './firebase';
-import { signInWithPopup, GoogleAuthProvider,signOut } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 const provider = new GoogleAuthProvider();
-
 function App() {
-  const [isLogin,setIsLogin] = useState(false);
+  const [,setIsLogin] = useState(false);
   const [currentuser,setCurrentUser] = useState({});
   const [message, setMessage] = useState([]);
   const [userData,setUserData] = useState([]);
@@ -97,9 +97,10 @@ function App() {
       else{
         let newArr = [];
         user.current.map((elem)=>{
-          if(elem.email != data.email){
+          if(elem.email !== data.email){
             newArr.push(elem);
           }
+          return false;
         })
         setUserData(newArr);
         user.current = newArr;
