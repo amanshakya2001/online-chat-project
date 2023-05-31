@@ -7,7 +7,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
   return (
     <section id="chatWindow" className='py-5'>
         <div className="container">
-          <div className="card">
+          <div className="card shadow overflow-hidden border border-0">
             <div className="card-body p-0">
             <div className="row m-0">
               <div className="col-5 p-0">
@@ -15,7 +15,9 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
                   <div className="avtar">
                     <img className='img-fluid' src={currentuser.image} alt={currentuser.name} />
                   </div>
-                  <h4 className='text-white text-capitalize ms-3'></h4>
+                  <div className="menu-icon-wrapper ms-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512"><path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/></svg>
+                  </div>
                 </div>
                 <ul className="user-list mb-0">
                   {user.length!=0 ?"":<p className='text-center py-5'>No user online yet</p>}
@@ -23,7 +25,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
                     return(
                     <li className="user border border-bottom-1 w-100" key={obj.email}>
                       <Link to={`/chat/${obj.email}`} className='d-flex text-decoration-none text-dark position-relative' onClick={()=>{setOnlineChatUser(obj.email)}}>
-                        <div className="avtar">
+                        <div className="avtar ms-3">
                           <img className="img-fluid rounded-circle" src={obj.image} alt={obj.name} />
                         </div>
                         <div className="content ms-3">

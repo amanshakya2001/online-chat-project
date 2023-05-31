@@ -62,6 +62,7 @@ function App() {
     setMessage((prevState)=>{return [...prevState,{'email':sender,'sender':'You','message':data.msg,'type':'Yours'}]})
     $('#msg').val('');
     $('#messageBody').scrollTop();
+    $('input[type=text]').focus();
 
   }
 

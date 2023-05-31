@@ -1,12 +1,15 @@
+body{
+    background-color: #F1F6F9;
+}
 .user-list{
     list-style: none;
     padding: 0px;
     .user{
-        background-color: greenyellow;
+        border: 0px !important;
         padding: 10px 5px;
         .avtar{
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background-color: white;
             border-radius: 30px;
             position: relative;
@@ -42,8 +45,13 @@
     }
 }
 
+.card{
+    .row{
+        height: 90vh;
+    }
+}
+
 #chat-room{
-    height: 90vh;
     ul{
         list-style: none;
         display: flex;
@@ -58,6 +66,11 @@
             margin-bottom: 25px;
         }
         .Yours{
+            .msgbox{
+                background-color: #19376D;
+                color: white;
+            }
+
             padding-left: 20px;
             margin-left: auto;
             .avtar{
@@ -66,6 +79,9 @@
             }
         }
         .incoming{
+            .msgbox{
+                background-color: #E4DCCF;
+            }
             padding-right: 20px;
             .msgbox{
                 margin-left: 15px;
@@ -78,13 +94,12 @@
             width: 50px;
         }
         .msgbox{
-            background-color: skyblue;
             padding: 5px 10px;
             border-radius:10px ;
         }
     }
     #messageBody{
-        height: calc(100% - 150px);
+        height: 75vh;
         overflow: auto;
         padding: 20px 0px;
     }
@@ -94,6 +109,8 @@
         padding: 0px 10px;
         input[type=text]{
             width: 80%;
+            border-radius: 10px;
+            outline: none !important;
         }
         input[type=submit]{
             width: 17%;
@@ -103,7 +120,7 @@
 }
 
 .chatnav{
-    background-color: green;
+    background-color: #394867;
     padding: 20px 10px;
     display: flex;
     align-items: center;
@@ -116,22 +133,27 @@
     }
 }
 .notification{
-    background-color: red;
+    background-color: #002B5B;
     height: fit-content;
-    padding: 10px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
     color: white;
-    border-radius: 10px;
+    border-radius: 30px;
     position: absolute;
     right: 10px;
     top: calc( 50% - 23px );
 }
 
-.video-icon-wrapper,.call-icon-wrapper{
+.video-icon-wrapper,.call-icon-wrapper,.menu-icon-wrapper{
     width: 40px;
-    height: 35px;
+    height: 30px;
     cursor: pointer;
     svg{
         fill: white;
-        height: 35px;
+        height: 30px;
     }
 }
