@@ -44,9 +44,19 @@ io.on('connection', (socket) => {
 	socket.on('user_login_first_time',(data)=>{
 		connection.query(`Insert into chatusers(email,name,image,isactive,socketid) values('${data.email}','${data.name}','${data.image}',true,'${socket.id}');`,(error, results) => {
 			console.log(data.email,"logined as",socket.id)
-			socket.broadcast.emit('profile_change',{'email':data.email,'name':data.name,'image':data.image,'isActive':true});
+			try{
+				socket.broadcast.emit('profile_change',{'email':data.email,'name':data.name,'image':data.image,'isActive':true});
+			}
+			catch(error){
+				console.log('An error Occured',error.message)
+			}
 			connection.query(`select email,name,image from chatusers where  email !='${data.email}' and isactive = true;`,(error, results) => {
-				socket.emit('user_data',results.rows);
+				try{
+					socket.emit('user_data',results.rows);
+				}
+				catch(error){
+					console.log('An error Occured',error.message)
+				}
 			});
 		});
 	});
@@ -58,11 +68,21 @@ io.on('connection', (socket) => {
 			connection.query(`select email,name,image from chatusers where socketid = '${socket.id}';`,(error, results) => {
 				let user = results.rows[0];
 				// Broadcast that profile all user
-				socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':true});
+				try{
+					socket.broadcast.emit('profile_change',{'email':user.email,'name':user.name,'image':user.image,'isActive':true});
+				}
+				catch(error){
+					console.log('An error Occured',error.message)
+				}
 			});
 			connection.query(`select email,name,image from chatusers where  email !='${data.email}' and isactive = true;`,(error, results) => {
 				// send all user, who are online ,data to the socket
-				socket.emit('user_data',results.rows);
+				try{
+					socket.emit('user_data',results.rows);
+				}
+				catch(error){
+					console.log('An error Occured',error.message)
+				}
 			});
 		});
 	});
@@ -76,10 +96,20 @@ io.on('connection', (socket) => {
 				let sender = results.rows[0];
 				if(connect_user !== sender.email){
 					// if user is not active for that chat send notification too
-					socket.to(socketid).emit("notification",sender.email);
+					try{
+						socket.to(socketid).emit("notification",sender.email);
+					}
+					catch(error){
+						console.log('An error Occured',error.message)
+					}
 				}
 				// Broadcast that to to specific user socket
-				socket.to(socketid).emit("incomingMsg",{'email':sender.email,'sender':sender.name,'message':message.msg,'type':'incoming'});
+				try{
+					socket.to(socketid).emit("incomingMsg",{'email':sender.email,'sender':sender.name,'message':message.msg,'type':'incoming'});
+				}
+				catch(error){
+					console.log('An error Occured',error.message)
+				}
 			});
 		});
 	});
