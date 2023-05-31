@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { auth } from './firebase';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import Video from './components/video';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 const provider = new GoogleAuthProvider();
@@ -20,6 +21,9 @@ function App() {
   const user = useRef(null);
   const history = useNavigate();
   const [notification,setNotification] = useState({});
+
+
+  const myVideo = useRef();
 
   // This script to login and store data in database.
   useEffect(() => {
@@ -149,11 +153,15 @@ function App() {
     }
   }, [])
   
+  const callUser = (data)=>{
+    history('/video',{state:{'userEmail':data.email,'userName':data.name}});
+  }
   
   return (
       <Routes>
         <Route path="/" element={<LoginForm />} />
-        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} currentuser={currentuser} setOnlineChatUser={setOnlineChatUser} notification={notification.updatedObject} />} />
+        <Route path="/chat/*" element={<Chat submitMessage={submitMessage} user={userData} message={message} currentuser={currentuser} setOnlineChatUser={setOnlineChatUser} notification={notification.updatedObject} callUser={callUser} />} />
+        <Route path='/video/*' element={<Video />} />
       </Routes>
   );
 }

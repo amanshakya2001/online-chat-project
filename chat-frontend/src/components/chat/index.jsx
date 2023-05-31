@@ -4,7 +4,7 @@ import MessagePage from './MessagePage';
 import { Route, Link,Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 
-export default function Chat({submitMessage,user,message,currentuser,setOnlineChatUser,notification}) {
+export default function Chat({submitMessage,user,message,currentuser,setOnlineChatUser,notification,callUser}) {
   useEffect(() => {
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
@@ -18,7 +18,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
             <div className="row m-0">
               <div className="col-5 p-0">
                 <div className='chatnav'>
-                  <div className="avtar">
+                  <div className="avtar ms-3">
                     <img className='img-fluid' src={currentuser.image} alt={currentuser.name} />
                   </div>
                   <div className="menu-icon-wrapper ms-auto">
@@ -26,7 +26,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
                   </div>
                 </div>
                 <ul className="user-list mb-0">
-                  {user.length!=0 ?"":<p className='text-center py-5'>No user online yet</p>}
+                  {user.length !== 0 ?"":<p className='text-center py-5'>No user online yet</p>}
                   {user.map((obj)=>{
                     return(
                     <li className="user border border-bottom-1 w-100" key={obj.email}>
@@ -47,7 +47,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
               <div className="col-7 p-0 border border-start-1 border-top-0 border-end-0 border-bottom-0">
                   <Routes>
                     <Route path="/" element={<MessagePage />} />
-                    <Route path="/:chatId" exact element={<ChatPage submitMessage={submitMessage} message={message} user={user} currentuser={currentuser} />} />
+                    <Route path="/:chatId" exact element={<ChatPage submitMessage={submitMessage} message={message} user={user} currentuser={currentuser} callUser={callUser} />} />
                   </Routes>
               </div>
             </div>
