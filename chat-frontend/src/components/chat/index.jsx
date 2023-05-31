@@ -2,9 +2,15 @@ import React from 'react';
 import ChatPage from './ChatPage';
 import MessagePage from './MessagePage';
 import { Route, Link,Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function Chat({submitMessage,user,message,currentuser,setOnlineChatUser,notification}) {
-  return (
+  useEffect(() => {
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }, [])
+  return (    
     <section id="chatWindow" className='py-5'>
         <div className="container">
           <div className="card shadow overflow-hidden border border-0">
