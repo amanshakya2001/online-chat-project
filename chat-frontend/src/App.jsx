@@ -61,7 +61,7 @@ function App() {
     socket.emit('message',data);
     setMessage((prevState)=>{return [...prevState,{'email':sender,'sender':'You','message':data.msg,'type':'Yours'}]})
     $('#msg').val('');
-    $('#messageBody').scrollTop();
+    $("#messageBody").animate({scrollTop: $('#messageBody').get(0).scrollHeight}, 1000);
     $('input[type=text]').focus();
 
   }

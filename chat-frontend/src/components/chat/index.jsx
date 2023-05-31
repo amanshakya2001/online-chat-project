@@ -38,7 +38,7 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
                   })}
                 </ul>
               </div>
-              <div className="col-7 p-0">
+              <div className="col-7 p-0 border border-start-1 border-top-0 border-end-0 border-bottom-0">
                   <Routes>
                     <Route path="/" element={<MessagePage />} />
                     <Route path="/:chatId" exact element={<ChatPage submitMessage={submitMessage} message={message} user={user} currentuser={currentuser} />} />
