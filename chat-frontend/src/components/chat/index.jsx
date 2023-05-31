@@ -11,6 +11,12 @@ export default function Chat({submitMessage,user,message,currentuser,setOnlineCh
             <div className="card-body p-0">
             <div className="row m-0">
               <div className="col-5 p-0">
+                <div className='chatnav'>
+                  <div className="avtar">
+                    <img className='img-fluid' src={currentuser.image} alt={currentuser.name} />
+                  </div>
+                  <h4 className='text-white text-capitalize ms-3'></h4>
+                </div>
                 <ul className="user-list mb-0">
                   {user.length!=0 ?"":<p className='text-center py-5'>No user online yet</p>}
                   {user.map((obj)=>{
