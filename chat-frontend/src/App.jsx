@@ -153,9 +153,22 @@ function App() {
     }
   }, [])
   
+  // Calling a user
   const callUser = (data)=>{
     history('/video',{state:{'userEmail':data.email,'userName':data.name}});
+    socket.emit('callUser',data.email)
   }
+
+   // Script to incoming call receive
+   useEffect(() => {
+    socket.on('incomingCall',(data)=>{
+          history('/video/incomingCall',{state:data});
+    });
+  
+    return () => {
+      socket.off('incomingCall');
+    }
+  }, [])
   
   return (
       <Routes>

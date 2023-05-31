@@ -1,7 +1,20 @@
 import React from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Outgoing({email,name,myVideo}) {
+export default function Outgoing({email,name}) {
+  const [stream, setStream] = useState();
+  const myVideo = useRef();
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream);
+        myVideo.current.srcObject = currentStream;
+    });
+  }, []);
+
   return (
     <section id='outgoing'>
         <div className="container">
