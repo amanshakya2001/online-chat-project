@@ -145,10 +145,9 @@ io.on('connection', (socket) => {
 		socket.on('callEnded',(email)=>{
 			connection.query(`select socketid from chatusers where email = '${email}';`,(error, results) => {
 				let calledSocketId = results.rows[0].socketid;
-				console.log(calledSocketId,email);
 				try{
 					connection.query(`select email from chatusers where socketid = '${socket.id}';`,(error, results) => {
-						let {callerEmail} = results.rows[0];
+						let callerEmail = results.rows[0].email;
 						try{
 							socket.to(calledSocketId).emit('callEnded',callerEmail);
 						}
@@ -191,7 +190,7 @@ io.on('connection', (socket) => {
 });
 
 server.listen(8080, () => {
-  console.log('Signaling server listening on port 8080');
+  console.log('Server Start at 8080 Port');
 });
 
 
