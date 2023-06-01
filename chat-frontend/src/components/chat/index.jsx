@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
 import ChatPage from './ChatPage';
 import MessagePage from './MessagePage';
-import { Route, Link,Routes } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export default function Chat({submitMessage,user,message,currentuser,setOnlineChatUser,notification,callUser}) {
   useEffect(() => {

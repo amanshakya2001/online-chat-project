@@ -4,6 +4,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const { Client } = require('pg');
 const moment = require('moment-timezone');
+const { instrument } = require("@socket.io/admin-ui");
 
 
 // Intializing some variables app,server and local.
@@ -32,9 +33,14 @@ connection.connect((error)=>{
 // Intializing socket known domain from where socket can connect.
 const io = socketIO(server, {
   cors: {
-    origin: ['http://localhost:3000','https://online-chat-frontend.onrender.com','https://chat.amanshakya.tech'],
+    origin: ['http://localhost:3000','https://online-chat-frontend.onrender.com','https://chat.amanshakya.tech','https://admin.socket.io'],
     methods: ['GET', 'POST']
   }
+});
+
+
+instrument(io, {
+	auth: false
 });
 
 

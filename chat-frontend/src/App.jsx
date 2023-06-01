@@ -1,15 +1,13 @@
 /* eslint-disable */
-import { io } from 'socket.io-client';
-import { Route,Routes } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import $ from 'jquery';
-import LoginForm from './components/login';
+import { useEffect, useRef, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import Chat from './components/chat';
-import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
-import { auth } from './firebase';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import LoginForm from './components/login';
 import Video from './components/video';
+import { auth } from './firebase';
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 const provider = new GoogleAuthProvider();

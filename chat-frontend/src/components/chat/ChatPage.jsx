@@ -1,8 +1,7 @@
-import React from 'react'
-import { useState } from 'react';
-import { useEffect } from 'react';
+/* eslint-disable */
 import $ from 'jquery';
-import { useParams  } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 export default function ChatPage({submitMessage,message,user,currentuser,callUser}) {
   const params = useParams();
   const chatId = params.chatId;

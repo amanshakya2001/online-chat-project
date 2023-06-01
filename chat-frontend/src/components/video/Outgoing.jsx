@@ -1,11 +1,8 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Outgoing({email,name,callEnded}) {
-  const [stream, setStream] = useState();
+  const [, setStream] = useState();
   const myVideo = useRef();
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
