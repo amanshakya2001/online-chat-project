@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
+import $ from 'jquery';
 import { useParams  } from 'react-router-dom';
 export default function ChatPage({submitMessage,message,user,currentuser,callUser}) {
   const params = useParams();
@@ -28,6 +29,22 @@ export default function ChatPage({submitMessage,message,user,currentuser,callUse
     })
   }, [message,chatId])
 
+  useEffect(()=>{
+    $('.emoji-box span').click((e)=>{
+      let emoji = $(e.target).text();
+      $('#msg').val($('#msg').val()+emoji);
+    })
+
+    $('.emoji-wrapper').click((e)=>{
+      e.stopPropagation();
+      $('.emoji-box').toggleClass('active');
+    })
+    
+    $('body').click(()=>{
+      $('.emoji-box').removeClass('active');
+    })
+  },[])
+  
   return (
     <section id='chat-room' className='h-100'>
       <div className='chatnav'>
@@ -57,8 +74,28 @@ export default function ChatPage({submitMessage,message,user,currentuser,callUse
           })}
         </ul>
       </div>
-      <form className='py-2' onSubmit={(e)=>{submitMessage(e,chatId)}}>
-        <input type="text" id="msg" placeholder='Type Here' />
+      <form className='py-3' onSubmit={(e)=>{submitMessage(e,chatId)}}>
+        <div className="emoji-wrapper mx-3">
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM176.4 176a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm128 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM256 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>
+          <div className="emoji-box d-flex flex-wrap shadow p-2 justify-content-center">
+            <span>😀</span>
+            <span>😃</span>
+            <span>😄</span>
+            <span>😁</span>
+            <span>😆</span>
+            <span>😅</span>
+            <span>😂</span>
+            <span>🤣</span>
+            <span>🥲</span>
+            <span>😊</span>
+            <span>😇</span>
+            <span>🙂</span>
+            <span>🙃</span>
+            <span>😉</span>
+          </div>
+        </div>
+        <input type="text" id="msg" placeho
+        lder='Type Here' />
         <input type="submit" value="Send" />
       </form>
     </section>

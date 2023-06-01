@@ -106,9 +106,48 @@ body{
     form{
         width: 100%;
         display: flex;
-        padding: 0px 10px;
+        background-color: #F1F6F9;
+        .emoji-wrapper{
+            position: relative;
+            cursor: pointer;
+            svg{
+                fill: black;
+                width: 30px;
+                height: 30px;
+            }
+            .emoji-box{
+                position: absolute;
+                cursor:initial;
+                bottom: 50px;
+                left: -10px;
+                width: 200px;
+                height: fit-content;
+                background-color: white;
+                border-radius: 10px;
+                display: none !important;
+
+                &.active{
+                    display: flex !important;
+                }
+                &::after{
+                    content: '';
+                    border-width: 10px;
+                    border-style: solid;
+                    border-color: white transparent transparent transparent;
+                    position: absolute;
+                    bottom: -18px;
+                    left: 14px;
+                }
+
+                span{
+                    margin: 2px;
+                    cursor: pointer;
+                    font-size: 30px;
+                }
+            }
+        }
         input[type=text]{
-            width: 80%;
+            width: 70%;
             border-radius: 10px;
             outline: none !important;
         }
