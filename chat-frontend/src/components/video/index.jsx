@@ -3,7 +3,7 @@ import { Route,Routes,useLocation } from 'react-router-dom';
 import Incoming from './incoming';
 import Outgoing from './Outgoing';
 
-export default function Video() {
+export default function Video({callEnded}) {
   const location = useLocation();
   const email = location.state ? location.state.userEmail : '';
   const name = location.state ? location.state.userName : '';
@@ -12,8 +12,8 @@ export default function Video() {
     <section>
         Video
         <Routes>
-          <Route path="/" element={<Outgoing email={email} name={name} />} />
-          <Route path="/incomingCall" element={<Incoming />} />
+          <Route path="/" element={<Outgoing email={email} name={name} callEnded={callEnded} />} />
+          <Route path="/incomingCall" element={<Incoming callEnded={callEnded} />} />
         </Routes>
     </section>
   )

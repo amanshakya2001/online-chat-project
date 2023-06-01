@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link,useLocation } from 'react-router-dom';
 
-export default function Incoming() {
+export default function Incoming(callEnded) {
   const location = useLocation();
   const email = location.state ? location.state.callerEmail : '';
   const name = location.state ? location.state.callerName : '';
