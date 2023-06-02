@@ -176,6 +176,9 @@ function App() {
         peer.signal(signal);
       });
 
+
+      peer.on("error", (err) => console.log("error", err));
+
       connectionRef.current = peer;
     }, 4000);
   }
