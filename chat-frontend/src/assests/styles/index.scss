@@ -110,41 +110,6 @@ body{
         .emoji-wrapper{
             position: relative;
             cursor: pointer;
-            svg{
-                fill: black;
-                width: 30px;
-                height: 30px;
-            }
-            .emoji-box{
-                position: absolute;
-                cursor:initial;
-                bottom: 50px;
-                left: -10px;
-                width: 200px;
-                height: fit-content;
-                background-color: white;
-                border-radius: 10px;
-                display: none !important;
-
-                &.active{
-                    display: flex !important;
-                }
-                &::after{
-                    content: '';
-                    border-width: 10px;
-                    border-style: solid;
-                    border-color: white transparent transparent transparent;
-                    position: absolute;
-                    bottom: -18px;
-                    left: 14px;
-                }
-
-                span{
-                    margin: 2px;
-                    cursor: pointer;
-                    font-size: 30px;
-                }
-            }
         }
         input[type=text]{
             width: 70%;
@@ -253,6 +218,7 @@ body{
         left: calc(50% - 100px);
     }
 }
+
 .my-video-card{
     height: 190px;
     width: 254px;
@@ -264,4 +230,25 @@ body{
         width: 100%;
         border-radius:6px;
     }
+}
+
+.EmojiPickerReact{
+    position: absolute !important;
+    bottom: 70px;
+    cursor: initial;
+    display: none !important;
+
+    &.active{
+        display: flex !important;
+    }
+    
+    .epr-emoji-category{
+        flex-direction: column;
+
+        .epr-emoji-category-content{
+            display: flex !important;
+            flex-wrap: wrap;
+        }
+    }
+
 }

@@ -2,6 +2,9 @@
 import $ from 'jquery';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Picker from 'emoji-picker-react';
+
+
 export default function ChatPage({submitMessage,message,user,currentuser,callUser}) {
   const params = useParams();
   const chatId = params.chatId;
@@ -28,19 +31,20 @@ export default function ChatPage({submitMessage,message,user,currentuser,callUse
     })
   }, [message,chatId])
 
+
+  const emojiSelected = (e)=>{
+    $('#msg').val($('#msg').val()+e.emoji);
+  }
+
   useEffect(()=>{
-    $('.emoji-box span').click((e)=>{
-      let emoji = $(e.target).text();
-      $('#msg').val($('#msg').val()+emoji);
-    })
 
     $('.emoji-wrapper').click((e)=>{
       e.stopPropagation();
-      $('.emoji-box').toggleClass('active');
+      $('.EmojiPickerReact').toggleClass('active');
     })
     
     $('body').click(()=>{
-      $('.emoji-box').removeClass('active');
+      $('.EmojiPickerReact').removeClass('active');
     })
   },[])
   
@@ -75,26 +79,10 @@ export default function ChatPage({submitMessage,message,user,currentuser,callUse
       </div>
       <form className='py-3' onSubmit={(e)=>{submitMessage(e,chatId)}}>
         <div className="emoji-wrapper mx-3">
-          <img src="/images/emoji-icon.gif" alt="emoji icon" width={40}  />
-          <div className="emoji-box d-flex flex-wrap shadow p-2 justify-content-center">
-            <span>😀</span>
-            <span>😃</span>
-            <span>😄</span>
-            <span>😁</span>
-            <span>😆</span>
-            <span>😅</span>
-            <span>😂</span>
-            <span>🤣</span>
-            <span>🥲</span>
-            <span>😊</span>
-            <span>😇</span>
-            <span>🙂</span>
-            <span>🙃</span>
-            <span>😉</span>
+          <img src="/images/emoji-icon.gif" alt="emoji icon" width={40} />
+          <Picker onEmojiClick={emojiSelected} />
           </div>
-        </div>
-        <input type="text" id="msg" placeho
-        lder='Type Here' />
+        <input className='px-3' type="text" id="msg" placeholder='Type Here' />
         <input type="submit" value="Send" />
       </form>
     </section>
