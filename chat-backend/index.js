@@ -131,15 +131,22 @@ io.on('connection', (socket) => {
 		})
 
 		// When user calls
-		socket.on('callUser',(email)=>{
+		socket.on('callUser',({email,signal})=>{
 			connection.query(`select socketid from chatusers where email = '${email}';`,(error, results) => {
 				let calledSocketId = results.rows[0].socketid;
 				connection.query(`select email,name from chatusers where socketid = '${socket.id}';`,(error, results) => {
 					let {email,name} = results.rows[0];
-					socket.to(calledSocketId).emit('incomingCall',{'callerEmail':email,'callerName':name});
+					io.to(calledSocketId).emit("callUser", { 'signal': signal,'email':email ,'name': name });
 				});
 			});
 		})
+
+		socket.on("answerCall", ({signal,email}) => {
+			connection.query(`select socketid from chatusers where email = '${email}';`,(error, results) => {
+				let calledSocketId = results.rows[0].socketid;
+				io.to(calledSocketId).emit("callAccepted", signal)
+			});
+		});
 
 		// When call Ended
 		socket.on('callEnded',(email)=>{

@@ -1,17 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Outgoing({email,name,callEnded}) {
-  const [, setStream] = useState();
-  const myVideo = useRef();
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then((currentStream) => {
-        setStream(currentStream);
-        myVideo.current.srcObject = currentStream;
-    });
+export default function Outgoing({email,name,callEnded,myVideo,userVideo}) {
+   // Took access of cam
+   useEffect(() => {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then((currentStream) => {
+          myVideo.current.srcObject = currentStream;
+      });
   }, []);
-
   return (
     <section id='outgoing'>
         <div className="container">
@@ -19,7 +16,7 @@ export default function Outgoing({email,name,callEnded}) {
             <div className="col-12">
               <div className="card remote-video-card border-0 shadow">
                 <div className="card-body">
-                  <video src=""></video>
+                  <video className='mx-auto' playsInline muted ref={userVideo} autoPlay height={'100%'}></video>
                   <div className="loading-box">
                     <div className="dot-row">
                       <div className="dot"></div>
